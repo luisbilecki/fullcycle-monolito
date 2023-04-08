@@ -1,8 +1,8 @@
 import Invoice from "../../domain/invoice.entity";
-import { FindInvoiceUseCaseOutputDTO } from "./find-invoice.usecase.dto";
+import { FindInvoiceUseCaseOutputDto } from "./find-invoice.usecase.dto";
 
-export default class FindInvoiceMapper {
-  static toOutput(invoice: Invoice): FindInvoiceUseCaseOutputDTO {
+export default class FindInvoiceUsecaseMapper {
+  static toOutput(invoice: Invoice): FindInvoiceUseCaseOutputDto {
     return {
       id: invoice.id.id,
       name: invoice.name,

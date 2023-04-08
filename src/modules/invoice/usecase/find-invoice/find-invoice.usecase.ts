@@ -1,8 +1,8 @@
 import InvoiceGateway from "../../gateway/invoice.gateway";
-import FindInvoiceMapper from "./find-invoice.mapper";
+import FindInvoiceUsecaseMapper from "./find-invoice.usecase.mapper";
 import {
-  FindInvoiceUseCaseInputDTO,
-  FindInvoiceUseCaseOutputDTO,
+  FindInvoiceUseCaseInputDto,
+  FindInvoiceUseCaseOutputDto,
 } from "./find-invoice.usecase.dto";
 
 export default class FindInvoiceUseCase {
@@ -13,10 +13,10 @@ export default class FindInvoiceUseCase {
   }
 
   async execute(
-    input: FindInvoiceUseCaseInputDTO
-  ): Promise<FindInvoiceUseCaseOutputDTO> {
+    input: FindInvoiceUseCaseInputDto
+  ): Promise<FindInvoiceUseCaseOutputDto> {
     const invoice = await this._invoiceRepository.find(input.id);
 
-    return FindInvoiceMapper.toOutput(invoice);
+    return FindInvoiceUsecaseMapper.toOutput(invoice);
   }
 }
