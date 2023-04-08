@@ -24,6 +24,59 @@ describe("PlaceOrderUseCase unit test", () => {
       );
     });
 
+    describe("getProducts methods", () => {
+      const mockDate = new Date(2000, 1, 1);
+
+      beforeAll(() => {
+        jest.useFakeTimers("modern");
+        jest.setSystemTime(mockDate);
+      });
+
+      afterAll(() => {
+        jest.useRealTimers();
+      });
+
+      //@ts-expect-error - no params in constructor
+      const useCase = new PlaceOrderUseCase();
+
+      it("should throw an error when product is not found", async () => {
+        const mockCatalogFacade = {
+          find: jest.fn().mockResolvedValue(null),
+        };
+
+        //@ts-expect-error - force set catalogFacade
+        useCase["catalogFacade"] = mockCatalogFacade;
+
+        await expect(useCase["getProduct"]("1")).rejects.toThrowError(
+          "Product 1 not found"
+        );
+      });
+
+      it("should return a product", async () => {
+        const mockCatalogFacade = {
+          find: jest.fn().mockResolvedValue({
+            id: "0",
+            name: "Product 0",
+            description: "Product 0 description",
+            salesPrice: 0,
+          }),
+        };
+
+        //@ts-expect-error - force set catalogFacade
+        useCase["catalogFacade"] = mockCatalogFacade;
+
+        await expect(useCase["getProduct"]("0")).resolves.toEqual(
+          new Product({
+            id: new Id("0"),
+            name: "Product 0",
+            description: "Product 0 description",
+            salesPrice: 0,
+          })
+        );
+        expect(mockCatalogFacade.find).toHaveBeenCalledTimes(1);
+      });
+    });
+
     describe("ValidateProducts methods", () => {
       //@ts-expect-error - no params in constructor
       const useCase = new PlaceOrderUseCase();
