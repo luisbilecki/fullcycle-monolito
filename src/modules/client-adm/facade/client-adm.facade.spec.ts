@@ -25,18 +25,19 @@ describe("ClientAdmFacade test", () => {
   });
 
   it("should create a client", async () => {
-    const repository = new ClientRepository();
-    const addUsecase = new AddClientUseCase(repository);
-    const facade = new ClientAdmFacade({
-      addUsecase: addUsecase,
-      findUsecase: undefined,
-    });
+    const facade = ClientAdmFacadeFactory.create();
 
     const input = {
       id: "1",
       name: "Client 1",
       email: "x@x.com",
-      address: "Address 1",
+      document: "123456789",
+      street: "Street 1",
+      number: "1",
+      complement: "Complement 1",
+      city: "City 1",
+      state: "State 1",
+      zipCode: "12345678",
     };
 
     await facade.add(input);
@@ -46,7 +47,13 @@ describe("ClientAdmFacade test", () => {
     expect(client).toBeDefined();
     expect(client.name).toBe(input.name);
     expect(client.email).toBe(input.email);
-    expect(client.address).toBe(input.address);
+    expect(client.document).toBe(input.document);
+    expect(client.street).toBe(input.street);
+    expect(client.number).toBe(input.number);
+    expect(client.complement).toBe(input.complement);
+    expect(client.city).toBe(input.city);
+    expect(client.state).toBe(input.state);
+    expect(client.zipCode).toBe(input.zipCode);
   });
 
   it("should find a client", async () => {
@@ -54,9 +61,15 @@ describe("ClientAdmFacade test", () => {
 
     const input = {
       id: "1",
-      name: "Luis",
-      email: "luis@luis.com",
-      address: "My Address",
+      name: "Client 1",
+      email: "x@x.com",
+      document: "123456789",
+      street: "Street 1",
+      number: "1",
+      complement: "Complement 1",
+      city: "City 1",
+      state: "State 1",
+      zipCode: "12345678",
     };
 
     await facade.add(input);
@@ -67,6 +80,12 @@ describe("ClientAdmFacade test", () => {
     expect(client.id).toBe(input.id);
     expect(client.name).toBe(input.name);
     expect(client.email).toBe(input.email);
-    expect(client.address).toBe(input.address);
+    expect(client.document).toBe(input.document);
+    expect(client.street).toBe(input.street);
+    expect(client.number).toBe(input.number);
+    expect(client.complement).toBe(input.complement);
+    expect(client.city).toBe(input.city);
+    expect(client.state).toBe(input.state);
+    expect(client.zipCode).toBe(input.zipCode);
   });
 });

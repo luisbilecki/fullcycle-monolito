@@ -5,6 +5,8 @@ import ProductAdmFacadeInterface from "../../../product-adm/facade/product-adm.f
 import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
 import Product from "../../domain/product.entity";
 import Id from "../../../@shared/domain/value-object/id.value-object";
+import Client from "../../domain/client.entity";
+import Order from "../../domain/order.entity";
 
 export default class PlaceOrderUseCase implements UseCaseInterface {
   private clientFacade: ClientAdmFacadeInterface;
@@ -26,12 +28,33 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
     if (!client) {
       throw new Error("Client not found");
     }
+
     await this.validateProducts(input);
+
     const products = await Promise.all(
       input.products.map(async (p) => {
         return await this.getProduct(p.productId);
       })
     );
+
+    const myClient = new Client({
+      id: new Id(client.id),
+      name: client.name,
+      email: client.email,
+      document: client.document,
+      street: client.street,
+      number: client.number,
+      complement: client.complement,
+      city: client.city,
+      state: client.state,
+      zipCode: client.zipCode,
+    });
+
+    const order = new Order({
+      client: myClient,
+      products: products,
+    });
+
     return Promise.resolve(undefined);
   }
 
@@ -63,7 +86,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       id: new Id(product.id),
       name: product.name,
       description: product.description,
-      salePrice: product.salesPrice,
+      salesPrice: product.salesPrice,
     };
     return new Product(productProps);
   }

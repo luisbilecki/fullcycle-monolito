@@ -7,7 +7,7 @@ type OrderProps = {
   id?: Id;
   client: Client;
   products: Product[];
-  status: string;
+  status?: string;
 };
 
 export default class Order extends BaseEntity {
@@ -40,7 +40,7 @@ export default class Order extends BaseEntity {
 
   get total(): number {
     return this._products.reduce(
-      (total, product) => total + product.salePrice,
+      (total, product) => total + product.salesPrice,
       0
     );
   }

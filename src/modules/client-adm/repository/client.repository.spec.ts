@@ -26,9 +26,15 @@ describe("ClientRepository test", () => {
   it("should create a client", async () => {
     const client = new Client({
       id: new Id("1"),
-      name: "Luis",
-      email: "luis@luis.com",
-      address: "Rua das Acacias",
+      name: "Client 1",
+      email: "x@x.com",
+      document: "123456789",
+      street: "Street 1",
+      number: "1",
+      complement: "Complement 1",
+      city: "City 1",
+      state: "State 1",
+      zipCode: "12345678",
     });
 
     const repository = new ClientRepository();
@@ -40,7 +46,13 @@ describe("ClientRepository test", () => {
     expect(clientDb.id).toBe(client.id.id);
     expect(clientDb.name).toBe(client.name);
     expect(clientDb.email).toBe(client.email);
-    expect(clientDb.address).toBe(client.address);
+    expect(clientDb.document).toBe(client.document);
+    expect(clientDb.street).toBe(client.street);
+    expect(clientDb.number).toBe(client.number);
+    expect(clientDb.complement).toBe(client.complement);
+    expect(clientDb.city).toBe(client.city);
+    expect(clientDb.state).toBe(client.state);
+    expect(clientDb.zipCode).toBe(client.zipCode);
     expect(clientDb.createdAt).toStrictEqual(client.createdAt);
     expect(clientDb.updatedAt).toStrictEqual(client.updatedAt);
   });
@@ -48,9 +60,15 @@ describe("ClientRepository test", () => {
   it("should find a client", async () => {
     const client = await ClientModel.create({
       id: "1",
-      name: "Osvaldir",
-      email: "osvaldir1950@email.com",
-      address: "Rua da Banca, 321",
+      name: "Client 1",
+      email: "x@x.com",
+      document: "123456789",
+      street: "Street 1",
+      number: "1",
+      complement: "Complement 1",
+      city: "City 1",
+      state: "State 1",
+      zipCode: "12345678",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -61,8 +79,22 @@ describe("ClientRepository test", () => {
     expect(result.id.id).toEqual(client.id);
     expect(result.name).toEqual(client.name);
     expect(result.email).toEqual(client.email);
-    expect(result.address).toEqual(client.address);
+    expect(result.document).toEqual(client.document);
+    expect(result.street).toEqual(client.street);
+    expect(result.number).toEqual(client.number);
+    expect(result.complement).toEqual(client.complement);
+    expect(result.city).toEqual(client.city);
+    expect(result.state).toEqual(client.state);
+    expect(result.zipCode).toEqual(client.zipCode);
     expect(result.createdAt).toStrictEqual(client.createdAt);
     expect(result.updatedAt).toStrictEqual(client.updatedAt);
+  });
+
+  it("should not find a client", async () => {
+    const repository = new ClientRepository();
+
+    await expect(() => repository.find("2")).rejects.toThrowError(
+      "Client not found"
+    );
   });
 });
