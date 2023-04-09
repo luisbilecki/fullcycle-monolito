@@ -2,14 +2,14 @@ import UseCaseInterface from "../../../@shared/usecase/use-case.interface";
 import { PlaceOrderInputDto, PlaceOrderOutputDto } from "./place-order.dto";
 import ClientAdmFacadeInterface from "../../../client-adm/facade/client-adm.facade.interface";
 import ProductAdmFacadeInterface from "../../../product-adm/facade/product-adm.facade.interface";
-import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
 import Product from "../../domain/product.entity";
+import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import Client from "../../domain/client.entity";
 import Order from "../../domain/order.entity";
-import CheckoutGateway from "../../gateway/checkout.gateway";
 import InvoiceFacadeInterface from "../../../invoice/facade/invoice.facade.interface";
 import PaymentFacadeInterface from "../../../payment/facade/facade.interface";
+import CheckoutGateway from "../../gateway/checkout.gateway";
 
 export default class PlaceOrderUseCase implements UseCaseInterface {
   private clientFacade: ClientAdmFacadeInterface;
@@ -48,7 +48,6 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         return await this.getProduct(p.productId);
       })
     );
-
     const myClient = new Client({
       id: new Id(client.id),
       name: client.name,
@@ -61,17 +60,14 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       state: client.state,
       zipCode: client.zipCode,
     });
-
     const order = new Order({
       client: myClient,
       products: products,
     });
-
     const payment = await this.paymentFacade.process({
       orderId: order.id.id,
       amount: order.total,
     });
-
     const invoice =
       payment.status === "approved"
         ? await this.invoiceFacade.generate({
@@ -87,7 +83,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
               return {
                 id: p.id.id,
                 name: p.name,
-                price: p.salesPrice,
+                price: p.price,
               };
             }),
           })
@@ -113,11 +109,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       throw new Error("No products selected");
     }
 
-    await this.checkStock(input.products);
-  }
-
-  private async checkStock(products: Array<any>): Promise<void> {
-    for (const p of products) {
+    for (const p of input.products) {
       const product = await this.productFacade.checkStock({
         productId: p.productId,
       });
@@ -136,7 +128,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       id: new Id(product.id),
       name: product.name,
       description: product.description,
-      salesPrice: product.salesPrice,
+      price: product.price,
     };
     return new Product(productProps);
   }

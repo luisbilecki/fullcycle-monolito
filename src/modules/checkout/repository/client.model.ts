@@ -1,23 +1,27 @@
 import {
+  BelongsTo,
   Column,
-  HasMany,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
 } from "sequelize-typescript";
-import ProductModel from "./product.model";
+import OrderModel from "./order.model";
 
 @Table({
-  tableName: "invoices",
+  tableName: "clients",
   timestamps: false,
 })
-export default class InvoiceModel extends Model {
+export default class ClientModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
   id: string;
 
   @Column({ allowNull: false })
   name: string;
+
+  @Column({ allowNull: false })
+  email: string;
 
   @Column({ allowNull: false })
   document: string;
@@ -40,12 +44,10 @@ export default class InvoiceModel extends Model {
   @Column({ allowNull: false })
   zipCode: string;
 
-  @HasMany(() => ProductModel)
-  items: ProductModel[];
-
+  @ForeignKey(() => OrderModel)
   @Column({ allowNull: false })
-  createdAt: Date;
+  orderId: string;
 
-  @Column({ allowNull: false })
-  updatedAt: Date;
+  @BelongsTo(() => OrderModel)
+  order: OrderModel;
 }

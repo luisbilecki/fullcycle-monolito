@@ -15,18 +15,18 @@ export default class AddProductUseCase {
       id: new Id(input.id),
       name: input.name,
       description: input.description,
-      purchasePrice: input.purchasePrice,
+      price: input.price,
       stock: input.stock,
     };
 
     const product = new Product(props);
-    this._productRepository.add(product);
+    await this._productRepository.add(product);
 
     return {
       id: product.id.id,
       name: product.name,
       description: product.description,
-      purchasePrice: product.purchasePrice,
+      price: product.price,
       stock: product.stock,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,

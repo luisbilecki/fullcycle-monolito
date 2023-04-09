@@ -1,14 +1,17 @@
-import { InternetModule } from "@faker-js/faker";
 import Id from "../../@shared/domain/value-object/id.value-object";
 import Invoice from "../domain/invoice.entity";
 import Product from "../domain/product.entity";
 import InvoiceGateway from "../gateway/invoice.gateway";
 import Address from "../valueobject/address.valueobject";
-import { InvoiceModel } from "./invoice.model";
-import { ProductModel } from "./product.model";
+import InvoiceModel from "./invoice.model";
+import ProductModel from "./product.model";
 
 export default class InvoiceRepository implements InvoiceGateway {
   async generate(invoice: Invoice): Promise<void> {
+    await ProductModel.destroy({
+      where: { id: invoice.items.map((item) => item.id.id) },
+    });
+
     await InvoiceModel.create(
       {
         id: invoice.id.id,

@@ -13,14 +13,14 @@ export default class ProductRepository implements ProductGateway {
           id: new Id(product.id),
           name: product.name,
           description: product.description,
-          salesPrice: product.salesPrice,
+          price: product.price,
         })
     );
   }
   async find(id: string): Promise<Product> {
     const product = await ProductModel.findOne({
       where: {
-        id: id,
+        id,
       },
     });
 
@@ -28,7 +28,7 @@ export default class ProductRepository implements ProductGateway {
       id: new Id(product.id),
       name: product.name,
       description: product.description,
-      salesPrice: product.salesPrice,
+      price: product.price,
     });
   }
 }

@@ -9,8 +9,8 @@ export default class ClientAdmFacadeFactory {
     const findUsecase = new FindClientUseCase(repository);
     const addUsecase = new AddClientUseCase(repository);
     const facade = new ClientAdmFacade({
-      addUsecase: addUsecase,
-      findUsecase: findUsecase,
+      addUsecase,
+      findUsecase,
     });
 
     return facade;

@@ -4,26 +4,26 @@ import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
   tableName: "products",
   timestamps: false,
 })
-export class ProductModel extends Model {
+export default class ProductModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
   id: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: true })
   name: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: true })
   description: string;
 
   @Column({ allowNull: false })
-  purchasePrice: number;
+  price: number;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: true })
   stock: number;
 
-  @Column({ allowNull: false })
-  createdAt: Date;
+  @Column({ allowNull: true })
+  createdAt?: Date;
 
-  @Column({ allowNull: false })
-  updatedAt: Date;
+  @Column({ allowNull: true })
+  updatedAt?: Date;
 }
