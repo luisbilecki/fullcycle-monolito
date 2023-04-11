@@ -12,9 +12,9 @@ export default class ProductModel extends Model {
   @Column({ allowNull: false })
   name: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: true })
   description: string;
 
   @Column({ allowNull: false })
-  salesPrice: number;
+  price: number;
 }

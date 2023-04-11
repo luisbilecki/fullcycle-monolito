@@ -1,12 +1,12 @@
 import {
+  BelongsTo,
   Column,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
-  BelongsTo,
-  ForeignKey,
 } from "sequelize-typescript";
-import InvoiceModel from "./invoice.model";
+import OrderModel from "./order.model";
 
 @Table({
   tableName: "products",
@@ -20,13 +20,16 @@ export default class ProductModel extends Model {
   @Column({ allowNull: false })
   name: string;
 
+  @Column({ allowNull: true })
+  description: string;
+
   @Column({ allowNull: false })
   price: number;
 
-  @ForeignKey(() => InvoiceModel)
+  @ForeignKey(() => OrderModel)
   @Column({ allowNull: false })
-  invoice_id: string;
+  orderId: string;
 
-  @BelongsTo(() => InvoiceModel)
-  invoice: InvoiceModel;
+  @BelongsTo(() => OrderModel)
+  order: OrderModel;
 }
